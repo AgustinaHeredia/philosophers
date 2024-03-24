@@ -6,13 +6,16 @@
 #    By: agusheredia <agusheredia@student.42.fr>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/24 20:34:39 by agusheredia       #+#    #+#              #
-#    Updated: 2024/03/24 20:41:25 by agusheredia      ###   ########.fr        #
+#    Updated: 2024/03/24 21:55:30 by agusheredia      ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = philo
 FLAGS = -Wall -Werror -Wextra -g -fsanitize='address,undefined'
-SRC =
+SRC = main.c \
+		ft_atoi.c \
+		parser.c \
+		state_prints.c \
 
 HEADER = philo.h 
 
