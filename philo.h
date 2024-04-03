@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agusheredia <agusheredia@student.42.fr>    +#+  +:+       +#+        */
+/*   By: agheredi <agheredi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 20:35:59 by agusheredia       #+#    #+#             */
-/*   Updated: 2024/03/24 21:54:22 by agusheredia      ###   ########.fr       */
+/*   Updated: 2024/04/03 13:06:55 by agheredi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,17 @@ typedef struct s_data
 }		t_data;
 
 //Parser functions
-t_data	parser_data(int argc, char **argv);
+t_data	parser_data(char **argv);
+void	create_threads(t_data *data);
+
+//Threads functions
+void	create_threads(t_data *data);
+
+//state functions
+void	*eating(t_data *data);
 
 //Utils functions
 int		ft_atoi(const char *str);
+void	ft_error(char *str);
 
 #endif

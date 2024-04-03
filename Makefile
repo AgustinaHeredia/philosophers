@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: agusheredia <agusheredia@student.42.fr>    +#+  +:+       +#+         #
+#    By: agheredi <agheredi@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/24 20:34:39 by agusheredia       #+#    #+#              #
-#    Updated: 2024/03/24 21:55:30 by agusheredia      ###   ########.fr        #
+#    Updated: 2024/04/03 15:26:01 by agheredi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,6 +16,8 @@ SRC = main.c \
 		ft_atoi.c \
 		parser.c \
 		state_prints.c \
+		create_thread.c \
+		error.c \
 
 HEADER = philo.h 
 
@@ -36,20 +38,17 @@ all: $(NAME)
 $(OBJ_DIR)/%.o: srcs/%.c $(HEADER) Makefile
 	@mkdir -p $(OBJ_DIR)
 	@$(CC) $(FLAGS) $(INCLUDES) -c -o $@ $<
-	@echo "$(GREEN)$(NAME): $(YELLOW)Compiling $<$(DEFAULT)"
+	
 
 $(NAME): $(OBJECTS)
 	@$(CC) $(FLAGS) $(OBJECTS) -o $(NAME)
 	@echo "$(GREEN)$(NAME) created!$(DEFAULT)"
 
 clean:
-	@make -C $(LIBFT_PATH) clean
-	@make -C $(READLINE_PATH) clean
 	@rm -rf $(OBJ_DIR)
 	@echo "$(YELLOW)object files deleted!$(DEFAULT)"
 
 fclean: clean
-	@make -C $(LIBFT_PATH) fclean
 	@rm -f $(NAME)
 	@echo "$(RED)all deleted!$(DEFAULT)"
 
