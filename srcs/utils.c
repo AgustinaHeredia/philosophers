@@ -1,38 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_atoi.c                                          :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agheredi <agheredi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/08 10:09:51 by agheredi          #+#    #+#             */
-/*   Updated: 2024/04/03 11:52:33 by agheredi         ###   ########.fr       */
+/*   Created: 2024/04/04 12:25:55 by agheredi          #+#    #+#             */
+/*   Updated: 2024/04/04 12:28:47 by agheredi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philo.h"
 
-int	ft_atoi(const char *str)
+void	ft_putstr_fd(char *s, int fd)
 {
 	int		i;
-	int		nbr;
-	int		flag;
 
 	i = 0;
-	nbr = 0;
-	flag = 0;
-	while ((str[i] >= 9 && str[i] <= 13) || str[i] == ' ')
-		i++;
-	if (str[i] == '-')
-		flag = -1;
-	if (str[i] == '-' || str[i] == '+')
-		i++;
-	while (str[i] >= '0' && str[i] <= '9')
+	if (!s)
+		return ;
+	while (s[i] != '\0')
 	{
-		nbr = (str[i] - '0') + nbr * 10;
+		write(fd, &s[i], 1);
 		i++;
 	}
-	if (flag == -1)
-		nbr = nbr * flag;
-	return (nbr);
 }

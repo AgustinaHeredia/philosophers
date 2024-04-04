@@ -6,18 +6,18 @@
 #    By: agheredi <agheredi@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/24 20:34:39 by agusheredia       #+#    #+#              #
-#    Updated: 2024/04/03 15:26:01 by agheredi         ###   ########.fr        #
+#    Updated: 2024/04/04 15:50:29 by agheredi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = philo
 FLAGS = -Wall -Werror -Wextra -g -fsanitize='address,undefined'
 SRC = main.c \
-		ft_atoi.c \
+		utils.c \
 		parser.c \
-		state_prints.c \
-		create_thread.c \
+		utils_parser.c \
 		error.c \
+		
 
 HEADER = philo.h 
 

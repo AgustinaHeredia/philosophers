@@ -6,7 +6,7 @@
 /*   By: agheredi <agheredi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 20:35:59 by agusheredia       #+#    #+#             */
-/*   Updated: 2024/04/03 13:06:55 by agheredi         ###   ########.fr       */
+/*   Updated: 2024/04/04 16:46:09 by agheredi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,34 +19,72 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <sys/time.h>
+# include <limits.h>
+# include <stdbool.h>
+
+//Enum
+enum	e_control_code
+{
+	INIT,
+	DESTROY,
+	LOCK,
+	UNLOCK,
+	JOIN,
+	DETACH,
+};
 
 //Structs
+typedef pthread_t		t_mtx;
+
+typedef struct s_table	t_table;
+
+typedef struct s_fork
+{
+	t_mtx	fork;
+	int		id_fork;
+}	t_fork;
+
 typedef struct s_philo
 {
+	int			id_philo;
+	int			count_meals;
+	bool		full;
+	int			last_time_meal;
+	t_fork		*left_fork;
+	t_fork		*right_fork;
+	pthread_t	thread_id;
+	t_table		*table;
 }		t_philo;
 
-typedef struct s_data
+struct s_table
 {
-	int		nb_philo;
+	int		number_of_philosophers;
 	int		time_to_die;
 	int		time_to_eat;
 	int		time_to_sleep;
-	int		nb_eat;
-	int		timestamp_in_ms;
-}		t_data;
+	int		number_of_times_each_philo_must_eat;
+	int		start_simulation;
+	int		end_simulation;
+	t_fork	*fork;
+	t_philo	philo;
+};
 
-//Parser functions
-t_data	parser_data(char **argv);
-void	create_threads(t_data *data);
+//FUNCTIONS
+//Functions parser
+int			check_argv(char **argv);
+void		parser_input(t_table *table, char **argv);
 
-//Threads functions
-void	create_threads(t_data *data);
+//Functions data init
+void		data_init(t_table *table);
 
-//state functions
-void	*eating(t_data *data);
+//Functions utils
+void		ft_putstr_fd(char *s, int fd);
+int			ft_isdigit(int c);
+long long	ft_atol(const char *str);
+int			check_char(char *argv);
+size_t		ft_strlen(const char *s);
 
-//Utils functions
-int		ft_atoi(const char *str);
-void	ft_error(char *str);
+//Error function
+int			ft_error(char *str);
 
 #endif

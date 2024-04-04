@@ -6,13 +6,15 @@
 /*   By: agheredi <agheredi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 13:01:28 by agheredi          #+#    #+#             */
-/*   Updated: 2024/04/03 13:03:22 by agheredi         ###   ########.fr       */
+/*   Updated: 2024/04/04 15:36:38 by agheredi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philo.h"
 
-void	ft_error(char *str)
+int	ft_error(char *str)
 {
-	printf("%s\n", str);
+	ft_putstr_fd(str, 2);
+	ft_putstr_fd("\n", 2);
+	return (1);
 }
