@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agusheredia <agusheredia@student.42.fr>    +#+  +:+       +#+        */
+/*   By: agheredi <agheredi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 13:01:28 by agheredi          #+#    #+#             */
-/*   Updated: 2024/04/08 22:35:04 by agusheredia      ###   ########.fr       */
+/*   Updated: 2024/04/09 16:33:47 by agheredi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	ft_error(char *str)
 	return (1);
 }
 
-int	handle_mutex_error(int status, int mtx_code)
+int	mtx_error(int status, int mtx_code)
 {
 	int	res;
 
@@ -28,16 +28,16 @@ int	handle_mutex_error(int status, int mtx_code)
 		return (res);
 	else if (status == EINVAL && mtx_code == INIT)
 		return (ft_error("The value specified by attr is invalid."));
-	else if (status == EINVAL && (mtx_code == DESTROIT
+	else if (status == EINVAL && (mtx_code == DESTROY
 			|| mtx_code == LOCK || mtx_code == UNLOCK))
 		return (ft_error("The value specified by mutex is invalid."));
 	else if (status == ENOMEM)
-		return (ft_error("The process cannot allocate enough memory to create another mutex."));
+		return (ft_error(MSN_ENOMEM));
 	else if (status == EPERM)
 		return (ft_error("The current thread does not hold a lock on mutex."));
 	else if (status == EBUSY)
 		return (ft_error("Mutex is locked."));
 	else if (status == EDEADLK)
-		return (ft_error("A deadlock would occur if the thread blocked waiting for mutex."));
+		return (ft_error(MSN_EDEADLK));
 	return (res);
 }

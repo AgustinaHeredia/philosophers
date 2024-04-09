@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agusheredia <agusheredia@student.42.fr>    +#+  +:+       +#+        */
+/*   By: agheredi <agheredi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 20:35:59 by agusheredia       #+#    #+#             */
-/*   Updated: 2024/04/08 21:58:38 by agusheredia      ###   ########.fr       */
+/*   Updated: 2024/04/09 16:49:32 by agheredi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,16 @@
 # define INIT 1
 # define LOCK 2
 # define UNLOCK 3
-# define DESTROIT 4
+# define DESTROY 4
+
+# define MSN_ENOMEM "The process cannot allocate enough \
+	memory to create another mutex."
+# define MSN_EDEADLK "A deadlock would occur if \
+	the thread blocked waiting for mutex."
 
 //Structs
-typedef struct s_table	t_table;
-typedef pthread_t		t_mtx;
+typedef struct s_table		t_table;
+typedef pthread_mutex_t		t_mtx;
 
 typedef struct s_fork
 {
@@ -47,6 +52,7 @@ typedef struct s_philo
 	t_fork		*left_fork;
 	t_fork		*right_fork;
 	pthread_t	thread_id;
+	t_mtx		philo_mutex;
 	t_table		*table;
 }		t_philo;
 
@@ -69,8 +75,8 @@ int			check_argv(char **argv);
 void		parser_input(t_table *table, char **argv);
 
 //Functions data init
-void		data_init(t_table *table);
-void		philo_init(t_table *table);
+int			data_init(t_table *table);
+int			philo_init(t_table *table);
 void		asigne_fork(t_philo *philo, t_fork *fork, int position);
 
 //Functions utils
@@ -82,6 +88,6 @@ size_t		ft_strlen(const char *s);
 
 //Error function
 int			ft_error(char *str);
-int			handle_mutex_error(int status, int mtx_code);
+int			mtx_error(int status, int mtx_code);
 
 #endif
