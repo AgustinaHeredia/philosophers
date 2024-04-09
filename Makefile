@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: agheredi <agheredi@student.42.fr>          +#+  +:+       +#+         #
+#    By: agusheredia <agusheredia@student.42.fr>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/24 20:34:39 by agusheredia       #+#    #+#              #
-#    Updated: 2024/04/04 15:50:29 by agheredi         ###   ########.fr        #
+#    Updated: 2024/04/08 20:59:51 by agusheredia      ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 

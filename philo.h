@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agheredi <agheredi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: agusheredia <agusheredia@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 20:35:59 by agusheredia       #+#    #+#             */
-/*   Updated: 2024/04/04 16:46:09 by agheredi         ###   ########.fr       */
+/*   Updated: 2024/04/08 21:58:38 by agusheredia      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,22 +21,16 @@
 # include <sys/time.h>
 # include <limits.h>
 # include <stdbool.h>
+# include <errno.h>
 
-//Enum
-enum	e_control_code
-{
-	INIT,
-	DESTROY,
-	LOCK,
-	UNLOCK,
-	JOIN,
-	DETACH,
-};
+# define INIT 1
+# define LOCK 2
+# define UNLOCK 3
+# define DESTROIT 4
 
 //Structs
-typedef pthread_t		t_mtx;
-
 typedef struct s_table	t_table;
+typedef pthread_t		t_mtx;
 
 typedef struct s_fork
 {
@@ -64,9 +58,9 @@ struct s_table
 	int		time_to_sleep;
 	int		number_of_times_each_philo_must_eat;
 	int		start_simulation;
-	int		end_simulation;
+	bool	end_simulation;
 	t_fork	*fork;
-	t_philo	philo;
+	t_philo	*philo;
 };
 
 //FUNCTIONS
@@ -76,6 +70,8 @@ void		parser_input(t_table *table, char **argv);
 
 //Functions data init
 void		data_init(t_table *table);
+void		philo_init(t_table *table);
+void		asigne_fork(t_philo *philo, t_fork *fork, int position);
 
 //Functions utils
 void		ft_putstr_fd(char *s, int fd);
@@ -86,5 +82,6 @@ size_t		ft_strlen(const char *s);
 
 //Error function
 int			ft_error(char *str);
+int			handle_mutex_error(int status, int mtx_code);
 
 #endif
