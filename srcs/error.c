@@ -6,7 +6,7 @@
 /*   By: agheredi <agheredi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 13:01:28 by agheredi          #+#    #+#             */
-/*   Updated: 2024/04/10 14:14:23 by agheredi         ###   ########.fr       */
+/*   Updated: 2024/04/10 15:15:31 by agheredi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,13 +53,13 @@ int	threads_error(int status, int code)
 		return (ft_error("The value specified by attr is invalid."));
 	else if (status == EINVAL && (code == JOIN || code == DETACH))
 		return (ft_error(MSN_EINVAL));
-	/*else if (status == ENOMEM)
-		return (ft_error(MSN_ENOMEM));
 	else if (status == EPERM)
-		return (ft_error("The current thread does not hold a lock on mutex."));
-	else if (status == EBUSY)
-		return (ft_error("Mutex is locked."));
+		return (ft_error(MSN_EPERM));
+	else if (status == EAGAIN)
+		return (ft_error(MSN_EAGAIN));
+	else if (status == ESRCH)
+		return (ft_error(MSN_ESRCH));
 	else if (status == EDEADLK)
-		return (ft_error(MSN_EDEADLK));*/
+		return (ft_error(MSN_EDEADLK_T));
 	return (res);
 }

@@ -6,7 +6,7 @@
 /*   By: agheredi <agheredi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 20:35:59 by agusheredia       #+#    #+#             */
-/*   Updated: 2024/04/10 14:13:48 by agheredi         ###   ########.fr       */
+/*   Updated: 2024/04/10 15:23:10 by agheredi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,15 @@
 	the thread blocked waiting for mutex."
 # define MSN_EINVAL "The implementation has detected that the value specified by thread \
     does not refer to a joinable thread."
+# define MSN_EPERM "The caller does not have appropriate permission to set \
+    the required scheduling parameters or scheduling policy."
+# define MSN_EAGAIN "The system lacked the necessary resources to create another thread, \
+	or the system-imposed limit on the total number of threads in a process \
+	[PTHREAD_THREADS_MAX] would be exceeded."
+# define MSN_ESRCH " No thread could be found corresponding to that specified \
+	by the given thread ID, thread."
+# define MSN_EDEADLK_T "A deadlock was detected or the value of thread \
+	specifies the calling thread."
 
 //Structs
 typedef struct s_table		t_table;
@@ -84,6 +93,9 @@ int			data_init(t_table *table);
 int			philo_init(t_table *table);
 void		asigne_fork(t_philo *philo, t_fork *fork, int position);
 
+//Functions Dinner
+int			dinner_star(t_table *table);
+
 //Functions utils
 void		ft_putstr_fd(char *s, int fd);
 int			ft_isdigit(int c);
@@ -94,5 +106,6 @@ size_t		ft_strlen(const char *s);
 //Error function
 int			ft_error(char *str);
 int			mtx_error(int status, int mtx_code);
+int			threads_error(int status, int code);
 
 #endif

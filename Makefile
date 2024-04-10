@@ -6,7 +6,7 @@
 #    By: agheredi <agheredi@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/24 20:34:39 by agusheredia       #+#    #+#              #
-#    Updated: 2024/04/09 16:20:34 by agheredi         ###   ########.fr        #
+#    Updated: 2024/04/10 15:22:43 by agheredi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ SRC = main.c \
 		utils_parser.c \
 		error.c \
 		data_init.c \
-		
+		dinner.c \
 
 HEADER = philo.h 
 
