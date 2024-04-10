@@ -6,7 +6,7 @@
 /*   By: agheredi <agheredi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 20:35:59 by agusheredia       #+#    #+#             */
-/*   Updated: 2024/04/09 16:49:32 by agheredi         ###   ########.fr       */
+/*   Updated: 2024/04/10 14:13:48 by agheredi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,16 @@
 # define LOCK 2
 # define UNLOCK 3
 # define DESTROY 4
+# define CREATE	5
+# define DETACH 6
+# define JOIN 7
 
 # define MSN_ENOMEM "The process cannot allocate enough \
 	memory to create another mutex."
 # define MSN_EDEADLK "A deadlock would occur if \
 	the thread blocked waiting for mutex."
+# define MSN_EINVAL "The implementation has detected that the value specified by thread \
+    does not refer to a joinable thread."
 
 //Structs
 typedef struct s_table		t_table;
