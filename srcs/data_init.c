@@ -6,7 +6,7 @@
 /*   By: agheredi <agheredi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 12:39:38 by agheredi          #+#    #+#             */
-/*   Updated: 2024/04/09 16:52:13 by agheredi         ###   ########.fr       */
+/*   Updated: 2024/04/11 14:22:07 by agheredi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,10 +57,11 @@ int	data_init(t_table *table)
 	int	res;
 
 	table->end_simulation = false;
-	table->philo = malloc(sizeof(t_philo) * table->number_of_philosophers);
+	i = table->number_of_philosophers;
+	table->philo = (t_philo *)malloc(sizeof(t_philo) * i);
 	if (!table->philo)
 		return (ft_error("Error: malloc failed"));
-	table->fork = malloc(sizeof(t_fork) * table->number_of_philosophers);
+	table->fork = (t_fork *)malloc(sizeof(t_fork) * i);
 	if (!table->fork)
 		return (ft_error("Error: malloc failed"));
 	i = 0;
