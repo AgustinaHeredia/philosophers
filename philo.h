@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agheredi <agheredi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: agusheredia <agusheredia@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 20:35:59 by agusheredia       #+#    #+#             */
-/*   Updated: 2024/04/10 15:23:10 by agheredi         ###   ########.fr       */
+/*   Updated: 2024/04/14 23:50:54 by agusheredia      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,9 @@ typedef struct s_philo
 {
 	int			id_philo;
 	int			count_meals;
+	long		last_time_meal;
 	bool		full;
-	int			last_time_meal;
+	bool		all_philo_ready;
 	t_fork		*left_fork;
 	t_fork		*right_fork;
 	pthread_t	thread_id;
@@ -72,15 +73,18 @@ typedef struct s_philo
 
 struct s_table
 {
-	int		number_of_philosophers;
-	int		time_to_die;
-	int		time_to_eat;
-	int		time_to_sleep;
-	int		number_of_times_each_philo_must_eat;
-	int		start_simulation;
-	bool	end_simulation;
-	t_fork	*fork;
-	t_philo	*philo;
+	int			number_of_philosophers;
+	int			time_to_die;
+	int			time_to_eat;
+	int			time_to_sleep;
+	int			number_of_times_each_philo_must_eat;
+	long		start_simulation;
+	bool		end_simulation;
+	bool		all_threads_ready;
+	t_mtx		table_mutex;
+	t_fork		*fork;
+	t_philo		*philo;
+	pthread_t	monitor;
 };
 
 //FUNCTIONS
@@ -90,11 +94,20 @@ void		parser_input(t_table *table, char **argv);
 
 //Functions data init
 int			data_init(t_table *table);
+int			table_init(t_table *table);
 int			philo_init(t_table *table);
 void		asigne_fork(t_philo *philo, t_fork *fork, int position);
 
 //Functions Dinner
-int			dinner_star(t_table *table);
+void		dinner_start(t_table *table);
+void		*dinner_simulation(void *data);
+void		*monitor_dinner(void *data);
+void		wait_all_threads(t_table *table);
+
+//actions dinner
+void		eat(t_philo *philo);
+void		thinking(t_philo *philo);
+void		ft_sleep(long time, t_philo *philo);
 
 //Functions utils
 void		ft_putstr_fd(char *s, int fd);
@@ -102,10 +115,21 @@ int			ft_isdigit(int c);
 long long	ft_atol(const char *str);
 int			check_char(char *argv);
 size_t		ft_strlen(const char *s);
+long		get_time(void);
+void		print_action(long timestamp_in_ms, int philo_x, char *str);
 
 //Error function
 int			ft_error(char *str);
 int			mtx_error(int status, int mtx_code);
 int			threads_error(int status, int code);
+
+//getters and setters
+void		set_bool(t_mtx *mutex, bool *dest, bool value);
+bool		get_bool(t_mtx *mutex, bool value);
+void		set_long(t_mtx *mutex, long *dest, long value);
+long		get_long(t_mtx *mutex, long value);
+
+//cleanning
+void		clean(t_table *table);
 
 #endif

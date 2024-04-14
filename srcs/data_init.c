@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   data_init.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agheredi <agheredi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: agusheredia <agusheredia@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 12:39:38 by agheredi          #+#    #+#             */
-/*   Updated: 2024/04/11 14:22:07 by agheredi         ###   ########.fr       */
+/*   Updated: 2024/04/13 21:42:13 by agusheredia      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ int	philo_init(t_table *table)
 		philo->id_philo = i + 1;
 		philo->count_meals = 0;
 		philo->full = false;
+		philo->all_philo_ready = false;
 		philo->last_time_meal = 0;
 		asigne_fork(philo, table->fork, i);
 		res = mtx_error(pthread_mutex_init(&philo->philo_mutex, NULL), INIT);
@@ -51,12 +52,14 @@ int	philo_init(t_table *table)
 	return (res);
 }
 
-int	data_init(t_table *table)
+int	table_init(t_table *table)
 {
 	int	i;
 	int	res;
 
+	res = 0;
 	table->end_simulation = false;
+	table->all_threads_ready = false;
 	i = table->number_of_philosophers;
 	table->philo = (t_philo *)malloc(sizeof(t_philo) * i);
 	if (!table->philo)
@@ -64,14 +67,27 @@ int	data_init(t_table *table)
 	table->fork = (t_fork *)malloc(sizeof(t_fork) * i);
 	if (!table->fork)
 		return (ft_error("Error: malloc failed"));
-	i = 0;
-	while (i < table->number_of_philosophers)
+	res = mtx_error(pthread_mutex_init(&table->table_mutex, NULL), INIT);
+	if (res != 0)
+		return (1);
+	return (res);
+}
+
+int	data_init(t_table *table)
+{
+	int	i;
+	int	res;
+
+	res = table_init(table);
+	if (res != 0)
+		return (1);
+	i = -1;
+	while (++i < table->number_of_philosophers)
 	{
 		res = mtx_error(pthread_mutex_init(&table->fork[i].fork, NULL), INIT);
 		if (res != 0)
 			return (1);
 		table->fork[i].id_fork = i;
-		i++;
 	}
 	if (philo_init(table) != 0)
 		return (1);

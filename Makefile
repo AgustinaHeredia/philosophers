@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: agheredi <agheredi@student.42.fr>          +#+  +:+       +#+         #
+#    By: agusheredia <agusheredia@student.42.fr>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/24 20:34:39 by agusheredia       #+#    #+#              #
-#    Updated: 2024/04/10 15:22:43 by agheredi         ###   ########.fr        #
+#    Updated: 2024/04/14 23:34:57 by agusheredia      ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,6 +19,10 @@ SRC = main.c \
 		error.c \
 		data_init.c \
 		dinner.c \
+		getters_setters.c \
+		syncro_utils.c \
+		actions.c \
+		cleanning.c \
 
 HEADER = philo.h 
 
