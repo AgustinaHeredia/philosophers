@@ -6,7 +6,7 @@
 /*   By: agheredi <agheredi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 15:21:03 by agheredi          #+#    #+#             */
-/*   Updated: 2024/04/15 15:55:56 by agheredi         ###   ########.fr       */
+/*   Updated: 2024/04/15 16:17:59 by agheredi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,13 @@ void	*one_philo(void *data)
 	t_philo	*philo;
 
 	philo = (t_philo *)data;
+	mtx_error(pthread_mutex_lock(&philo->philo_mutex), LOCK);
 	mtx_error(pthread_mutex_lock(&philo->right_fork->fork), LOCK);
 	print_action(get_time(), philo->id_philo, "has taken a RIGHT fork", YEL);
 	set_bool(&philo->table->table_mutex, &philo->table->end_simulation, true);
 	print_action(get_time(), philo->id_philo, "died", RED);
+	mtx_error(pthread_mutex_unlock(&philo->right_fork->fork), UNLOCK);
+	mtx_error(pthread_mutex_unlock(&philo->philo_mutex), UNLOCK);
 	return (NULL);
 }
 
