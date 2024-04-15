@@ -6,7 +6,7 @@
 /*   By: agusheredia <agusheredia@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 20:35:59 by agusheredia       #+#    #+#             */
-/*   Updated: 2024/04/14 23:50:54 by agusheredia      ###   ########.fr       */
+/*   Updated: 2024/04/15 09:23:19 by agusheredia      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,7 @@ void		dinner_start(t_table *table);
 void		*dinner_simulation(void *data);
 void		*monitor_dinner(void *data);
 void		wait_all_threads(t_table *table);
+void		*one_philo(void *data);
 
 //actions dinner
 void		eat(t_philo *philo);

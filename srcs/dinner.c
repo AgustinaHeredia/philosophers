@@ -6,11 +6,16 @@
 /*   By: agusheredia <agusheredia@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 15:21:03 by agheredi          #+#    #+#             */
-/*   Updated: 2024/04/14 23:48:06 by agusheredia      ###   ########.fr       */
+/*   Updated: 2024/04/15 09:22:37 by agusheredia      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philo.h"
+
+void	*one_philo(void *data)
+{
+	return (NULL);
+}
 
 void	*monitor_dinner(void *data)
 {
@@ -62,7 +67,7 @@ void	dinner_start(t_table *table)
 		return ;
 	else if (table->number_of_philosophers == 1)
 		threads_error(pthread_create(&table->philo[0].thread_id, NULL,
-				dinner_simulation, &table->philo[0]), CREATE);
+				one_philo, &table->philo[0]), CREATE);
 	else
 	{
 		while (++i < table->number_of_philosophers)
