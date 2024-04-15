@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agusheredia <agusheredia@student.42.fr>    +#+  +:+       +#+        */
+/*   By: agheredi <agheredi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 20:35:59 by agusheredia       #+#    #+#             */
-/*   Updated: 2024/04/15 09:23:19 by agusheredia      ###   ########.fr       */
+/*   Updated: 2024/04/15 15:46:19 by agheredi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,14 @@
 # include <limits.h>
 # include <stdbool.h>
 # include <errno.h>
+
+# define NC		"\e[0m"
+# define YEL	"\e[93m"
+# define LIL	"\e[95m"
+# define RED	"\e[91m"
+# define GRE	"\e[92m"
+# define BLU	"\e[94m"
+
 
 # define INIT 1
 # define LOCK 2
@@ -63,7 +71,6 @@ typedef struct s_philo
 	int			count_meals;
 	long		last_time_meal;
 	bool		full;
-	bool		all_philo_ready;
 	t_fork		*left_fork;
 	t_fork		*right_fork;
 	pthread_t	thread_id;
@@ -79,8 +86,8 @@ struct s_table
 	int			time_to_sleep;
 	int			number_of_times_each_philo_must_eat;
 	long		start_simulation;
+	bool		all_philo_ready;
 	bool		end_simulation;
-	bool		all_threads_ready;
 	t_mtx		table_mutex;
 	t_fork		*fork;
 	t_philo		*philo;
@@ -117,7 +124,9 @@ long long	ft_atol(const char *str);
 int			check_char(char *argv);
 size_t		ft_strlen(const char *s);
 long		get_time(void);
-void		print_action(long timestamp_in_ms, int philo_x, char *str);
+void		print_action(long time, int philo_x, char *str, char *color);
+bool		simulation_finish(t_table *table);
+bool		philo_died(t_philo *philo);
 
 //Error function
 int			ft_error(char *str);

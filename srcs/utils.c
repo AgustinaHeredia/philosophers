@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agusheredia <agusheredia@student.42.fr>    +#+  +:+       +#+        */
+/*   By: agheredi <agheredi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 12:25:55 by agheredi          #+#    #+#             */
-/*   Updated: 2024/04/14 22:49:35 by agusheredia      ###   ########.fr       */
+/*   Updated: 2024/04/15 15:45:33 by agheredi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ long	get_time(void)
 	return ((time.tv_sec * 1000) + (time.tv_usec / 1000));
 }
 
-void	print_action(long timestamp_in_ms, int philo_x, char *str)
+void	print_action(long time, int philo_x, char *str, char *color)
 {
-	printf("%ld %d %s\n", timestamp_in_ms, philo_x, str);
+	printf("%s%ld %d %s%s\n", color, time, philo_x, str, NC);
 }

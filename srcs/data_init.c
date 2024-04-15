@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   data_init.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agusheredia <agusheredia@student.42.fr>    +#+  +:+       +#+        */
+/*   By: agheredi <agheredi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 12:39:38 by agheredi          #+#    #+#             */
-/*   Updated: 2024/04/13 21:42:13 by agusheredia      ###   ########.fr       */
+/*   Updated: 2024/04/15 15:42:18 by agheredi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ int	philo_init(t_table *table)
 		philo->id_philo = i + 1;
 		philo->count_meals = 0;
 		philo->full = false;
-		philo->all_philo_ready = false;
 		philo->last_time_meal = 0;
 		asigne_fork(philo, table->fork, i);
 		res = mtx_error(pthread_mutex_init(&philo->philo_mutex, NULL), INIT);
@@ -59,7 +58,7 @@ int	table_init(t_table *table)
 
 	res = 0;
 	table->end_simulation = false;
-	table->all_threads_ready = false;
+	table->all_philo_ready = false;
 	i = table->number_of_philosophers;
 	table->philo = (t_philo *)malloc(sizeof(t_philo) * i);
 	if (!table->philo)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dinner.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agusheredia <agusheredia@student.42.fr>    +#+  +:+       +#+        */
+/*   By: agheredi <agheredi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 15:21:03 by agheredi          #+#    #+#             */
-/*   Updated: 2024/04/15 09:22:37 by agusheredia      ###   ########.fr       */
+/*   Updated: 2024/04/15 15:55:56 by agheredi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,13 @@
 
 void	*one_philo(void *data)
 {
+	t_philo	*philo;
+
+	philo = (t_philo *)data;
+	mtx_error(pthread_mutex_lock(&philo->right_fork->fork), LOCK);
+	print_action(get_time(), philo->id_philo, "has taken a RIGHT fork", YEL);
+	set_bool(&philo->table->table_mutex, &philo->table->end_simulation, true);
+	print_action(get_time(), philo->id_philo, "died", RED);
 	return (NULL);
 }
 
@@ -27,12 +34,12 @@ void	*monitor_dinner(void *data)
 	{
 		i = -1;
 		while (++i < table->number_of_philosophers
-			&& (!simulation_finished(table)))
+			&& (!simulation_finish(table)))
 		{
 			if (philo_died(table->philo + i))
 			{
 				set_bool(&table->table_mutex, &table->end_simulation, true);
-				print_action(get_time(), table->philo->id_philo, "died");
+				print_action(get_time(), table->philo->id_philo, "died", RED);
 			}
 		}
 	}
@@ -51,7 +58,7 @@ void	*dinner_simulation(void *data)
 		if (get_bool(&philo->philo_mutex, philo->full))
 			break ;
 		eat(philo);
-		print_action(get_time(), philo->id_philo, " is sleeping");
+		print_action(get_time(), philo->id_philo, "is sleeping", BLU);
 		ft_sleep(philo->table->time_to_sleep, philo);
 		thinking(philo);
 	}
@@ -77,10 +84,12 @@ void	dinner_start(t_table *table)
 	threads_error(pthread_create(&table->monitor, NULL,
 			monitor_dinner, table), CREATE);
 	table->start_simulation = get_time();
-	set_bool(&table->table_mutex, &table->all_threads_ready, true);
+	set_bool(&table->table_mutex, &table->all_philo_ready, true);
 	i = -1;
 	while (++i < table->number_of_philosophers)
 		threads_error(pthread_join(table->philo[i].thread_id, NULL), JOIN);
 	set_bool(&table->table_mutex, &table->end_simulation, true);
+	printf("HA LLEGADO AQUI\n");
 	threads_error(pthread_join(table->monitor, NULL), JOIN);
+	printf("HA LLEGADO despues del join monitor\n");
 }
