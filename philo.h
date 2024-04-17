@@ -6,7 +6,7 @@
 /*   By: agheredi <agheredi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 20:35:59 by agusheredia       #+#    #+#             */
-/*   Updated: 2024/04/17 10:47:52 by agheredi         ###   ########.fr       */
+/*   Updated: 2024/04/17 16:11:32 by agheredi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,9 +141,10 @@ size_t		ft_strlen(const char *s);
 long		get_time(void);
 long		time_elapsed(t_table *table, long actual_time);
 void		wait_time(t_philo *philo, t_state state);
-void		print_action(long time, int philo_x, char *str, char *color);
+void		print_action(long time, t_philo *philo, char *str, char *color);
 bool		simulation_finish(t_table *table);
 bool		philo_died(t_philo *philo);
+void		all_philo_full(t_table *table);
 
 //Error function
 int			ft_error(char *str);

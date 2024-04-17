@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dinner.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agusheredia <agusheredia@student.42.fr>    +#+  +:+       +#+        */
+/*   By: agheredi <agheredi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 15:21:03 by agheredi          #+#    #+#             */
-/*   Updated: 2024/04/17 11:42:17 by agusheredia      ###   ########.fr       */
+/*   Updated: 2024/04/17 16:56:25 by agheredi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,9 @@ void	*one_philo(void *data)
 	wait_all_threads(philo->table);
 	set_long(&philo->philo_mutex, &philo->last_time_meal, get_time());
 	time = time_elapsed(philo->table, get_time());
-	print_action(time, philo->id_philo, "has taken a RIGHT fork", YEL);
-	mtx_control(pthread_mutex_lock(&philo->philo_mutex), LOCK);
-	philo->state = DEAD;
-	mtx_control(pthread_mutex_unlock(&philo->philo_mutex), UNLOCK);
+	print_action(time, philo, "has taken a RIGHT fork", YEL);
+	wait_time(philo, DEAD);
+	set_status(philo, &philo->state, DEAD);
 	return (NULL);
 }
 
@@ -45,9 +44,9 @@ void	*monitor_dinner(void *data)
 			{
 				if (philo_died(&table->philo[i]))
 				{
+					time = time_elapsed(table, get_time());
+					print_action(time, table->philo, "died", RED);
 					set_bool(&table->table_mtx, &table->end_simulation, true);
-					time = time_elapsed(table->philo->table, get_time());
-					print_action(time, table->philo->id_philo, "died", RED);
 				}
 			}
 		}
@@ -63,18 +62,19 @@ void	*dinner_simulation(void *data)
 	wait_all_threads(philo->table);
 	while (!simulation_finish(philo->table))
 	{
-		if (get_status(philo, &philo->state) == FULL
-			|| get_status(philo, &philo->state) == DEAD)
-			break ;
-		eat(philo);
-		if (get_status(philo, &philo->state) == DEAD)
-			break ;
-		ft_sleep(philo);
-		if (get_status(philo, &philo->state) == DEAD)
-			break ;
-		thinking(philo);
-		if (get_status(philo, &philo->state) == DEAD)
-			break ;
+		if (get_status(philo, &philo->state) != FULL)
+			eat(philo);
+		printf("no esta muerto puede dormir\n");
+		if (!philo_died(philo))
+		{
+			printf("no esta muerto puede dormir\n");
+			ft_sleep(philo);
+		}
+		if (!philo_died(philo))
+			thinking(philo);
+		if (philo_died(philo))
+			set_bool(&philo->table->table_mtx,
+				&philo->table->end_simulation, true);
 	}
 	return (NULL);
 }
@@ -96,8 +96,9 @@ void	dinner_start(t_table *table)
 		{
 			threads_control(pthread_create(&table->philo[i].thread_id, NULL,
 					dinner_simulation, &table->philo[i]), CREATE);
-		}			
+		}
 	}
+	table->nbr_thread = i;
 	threads_control(pthread_create(&table->monitor, NULL, monitor_dinner,
 			table), CREATE);
 	i = -1;

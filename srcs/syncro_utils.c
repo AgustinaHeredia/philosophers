@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syncro_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agusheredia <agusheredia@student.42.fr>    +#+  +:+       +#+        */
+/*   By: agheredi <agheredi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 11:32:55 by agusheredia       #+#    #+#             */
-/*   Updated: 2024/04/17 11:49:00 by agusheredia      ###   ########.fr       */
+/*   Updated: 2024/04/17 16:57:53 by agheredi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,19 +24,45 @@ bool	all_thread_ready(t_mtx *mutex, int id_thread, int philo_nbr)
 
 	res = false;
 	mtx_control(pthread_mutex_lock(mutex), LOCK);
-	if (id_thread == philo_nbr)
+	if (id_thread == philo_nbr || id_thread == -1)
 	{
 		res = true;
-		printf("All threads are ready\n");
 	}
 	mtx_control(pthread_mutex_unlock(mutex), UNLOCK);
 	return (res);
 }
 
+void	all_philo_full(t_table *table)
+{
+	int	i;
+	int	count_full;
+
+	i = -1;
+	count_full = 0;
+	mtx_control(pthread_mutex_lock(&table->table_mtx), LOCK);
+	while (++i < table->nbr_of_philos)
+	{
+		if (get_status(&table->philo[i], &table->philo[i].state) == FULL)
+			count_full++;
+	}
+	if (count_full == table->nbr_of_philos)
+		set_bool(&table->table_mtx, &table->end_simulation, true);
+	mtx_control(pthread_mutex_unlock(&table->table_mtx), UNLOCK);
+}
+
 bool	simulation_finish(t_table *table)
 {
 	bool	finish;
+	int		i;
 
+	i = -1;
+	mtx_control(pthread_mutex_lock(&table->table_mtx), LOCK);
+	while (++i < table->nbr_of_philos)
+	{
+		philo_died(&table->philo[i]);
+	}
+	mtx_control(pthread_mutex_unlock(&table->table_mtx), UNLOCK);
+	all_philo_full(table);
 	finish = get_bool(&table->table_mtx, &table->end_simulation);
 	return (finish);
 }
@@ -56,7 +82,5 @@ bool	philo_died(t_philo *philo)
 	else
 		died = false;
 	mtx_control(pthread_mutex_unlock(&philo->philo_mutex), UNLOCK);
-	if (died == true)
-		set_bool(&philo->table->table_mtx, &philo->table->end_simulation, true);
 	return (died);
 }

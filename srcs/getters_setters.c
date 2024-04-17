@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   getters_setters.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agusheredia <agusheredia@student.42.fr>    +#+  +:+       +#+        */
+/*   By: agheredi <agheredi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 21:17:50 by agusheredia       #+#    #+#             */
-/*   Updated: 2024/04/16 22:32:36 by agusheredia      ###   ########.fr       */
+/*   Updated: 2024/04/17 16:11:17 by agheredi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

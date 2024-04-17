@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agusheredia <agusheredia@student.42.fr>    +#+  +:+       +#+        */
+/*   By: agheredi <agheredi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 21:41:21 by agusheredia       #+#    #+#             */
-/*   Updated: 2024/04/16 17:14:07 by agusheredia      ###   ########.fr       */
+/*   Updated: 2024/04/17 16:08:30 by agheredi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,11 @@ int	check_argv(char **argv)
 void	parser_input(t_table *table, char **argv)
 {
 	table->nbr_of_philos = (int)ft_atol(argv[1]);
+	if (table->nbr_of_philos == 0)
+	{
+		ft_error("It is not possible with zero philosophers");
+		return ;
+	}
 	table->time_to_die = (int)ft_atol(argv[2]);
 	table->time_to_eat = (int)ft_atol(argv[3]);
 	table->time_to_sleep = (int)ft_atol(argv[4]);

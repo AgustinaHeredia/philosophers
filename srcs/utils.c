@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agusheredia <agusheredia@student.42.fr>    +#+  +:+       +#+        */
+/*   By: agheredi <agheredi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 12:25:55 by agheredi          #+#    #+#             */
-/*   Updated: 2024/04/16 23:50:45 by agusheredia      ###   ########.fr       */
+/*   Updated: 2024/04/17 16:37:49 by agheredi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,11 +55,16 @@ void	wait_time(t_philo *philo, t_state state)
 		wait = get_long(&philo->table->table_mtx, &philo->table->time_to_sleep);
 	else if (state == EATING)
 		wait = get_long(&philo->table->table_mtx, &philo->table->time_to_eat);
+	else if (state == DEAD)
+		wait = get_long(&philo->table->table_mtx, &philo->table->time_to_die);
 	while ((get_time() - start) < wait)
 		usleep(500);
 }
 
-void	print_action(long time, int philo_x, char *str, char *color)
+void	print_action(long time, t_philo *philo, char *str, char *color)
 {
-	printf("%s%ld %d %s%s\n", color, time, philo_x, str, NC);
+	mtx_control(pthread_mutex_lock(&philo->table->table_mtx), LOCK);
+	if (philo->table->end_simulation == false)
+		printf("%s%ld %d %s%s\n", color, time, philo->id_philo, str, NC);
+	mtx_control(pthread_mutex_unlock(&philo->table->table_mtx), UNLOCK);
 }
