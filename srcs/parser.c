@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agheredi <agheredi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: agusheredia <agusheredia@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 21:41:21 by agusheredia       #+#    #+#             */
-/*   Updated: 2024/04/04 15:57:42 by agheredi         ###   ########.fr       */
+/*   Updated: 2024/04/16 17:14:07 by agusheredia      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,12 @@ int	check_argv(char **argv)
 
 void	parser_input(t_table *table, char **argv)
 {
-	table->number_of_philosophers = (int)ft_atol(argv[1]);
+	table->nbr_of_philos = (int)ft_atol(argv[1]);
 	table->time_to_die = (int)ft_atol(argv[2]);
 	table->time_to_eat = (int)ft_atol(argv[3]);
 	table->time_to_sleep = (int)ft_atol(argv[4]);
 	if (argv[5])
-		table->number_of_times_each_philo_must_eat = (int)ft_atol(argv[5]);
+		table->nbr_must_eat = (int)ft_atol(argv[5]);
 	else
-		table->number_of_times_each_philo_must_eat = -1;
+		table->nbr_must_eat = -1;
 }

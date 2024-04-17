@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agheredi <agheredi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: agusheredia <agusheredia@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 20:35:59 by agusheredia       #+#    #+#             */
-/*   Updated: 2024/04/15 15:46:19 by agheredi         ###   ########.fr       */
+/*   Updated: 2024/04/17 00:00:43 by agusheredia      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,8 @@
 # define RED	"\e[91m"
 # define GRE	"\e[92m"
 # define BLU	"\e[94m"
-
+# define M      "\033[1;35m"
+# define C      "\033[1;36m"
 
 # define INIT 1
 # define LOCK 2
@@ -59,6 +60,16 @@
 typedef struct s_table		t_table;
 typedef pthread_mutex_t		t_mtx;
 
+typedef enum e_philo_state
+{
+	EATING = 0,
+	SLEEPING = 1,
+	THINKING = 2,
+	DEAD = 3,
+	FULL = 4,
+	IDLE = 5
+}	t_state;
+
 typedef struct s_fork
 {
 	t_mtx	fork;
@@ -70,9 +81,9 @@ typedef struct s_philo
 	int			id_philo;
 	int			count_meals;
 	long		last_time_meal;
-	bool		full;
-	t_fork		*left_fork;
-	t_fork		*right_fork;
+	t_state		state;
+	t_fork		*second_fork;
+	t_fork		*first_fork;
 	pthread_t	thread_id;
 	t_mtx		philo_mutex;
 	t_table		*table;
@@ -80,15 +91,16 @@ typedef struct s_philo
 
 struct s_table
 {
-	int			number_of_philosophers;
-	int			time_to_die;
-	int			time_to_eat;
-	int			time_to_sleep;
-	int			number_of_times_each_philo_must_eat;
+	int			nbr_of_philos;
+	int			nbr_thread;
+	long		time_to_die;
+	long		time_to_eat;
+	long		time_to_sleep;
+	int			nbr_must_eat;
 	long		start_simulation;
 	bool		all_philo_ready;
 	bool		end_simulation;
-	t_mtx		table_mutex;
+	t_mtx		table_mtx;
 	t_fork		*fork;
 	t_philo		*philo;
 	pthread_t	monitor;
@@ -110,12 +122,15 @@ void		dinner_start(t_table *table);
 void		*dinner_simulation(void *data);
 void		*monitor_dinner(void *data);
 void		wait_all_threads(t_table *table);
+bool		all_thread_ready(t_mtx *mutex, int id_thread, int philo_nbr);
 void		*one_philo(void *data);
 
 //actions dinner
 void		eat(t_philo *philo);
+void		take_fork(t_philo *philo);
+void		drop_fork(t_fork *fork_right, t_fork *fork_left);
 void		thinking(t_philo *philo);
-void		ft_sleep(long time, t_philo *philo);
+void		ft_sleep(t_philo *philo);
 
 //Functions utils
 void		ft_putstr_fd(char *s, int fd);
@@ -124,20 +139,24 @@ long long	ft_atol(const char *str);
 int			check_char(char *argv);
 size_t		ft_strlen(const char *s);
 long		get_time(void);
+long		time_elapsed(t_table *table, long actual_time);
+void		wait_time(t_philo *philo, t_state state);
 void		print_action(long time, int philo_x, char *str, char *color);
 bool		simulation_finish(t_table *table);
 bool		philo_died(t_philo *philo);
 
 //Error function
 int			ft_error(char *str);
-int			mtx_error(int status, int mtx_code);
-int			threads_error(int status, int code);
+int			mtx_control(int status, int mtx_code);
+int			threads_control(int status, int code);
 
 //getters and setters
 void		set_bool(t_mtx *mutex, bool *dest, bool value);
-bool		get_bool(t_mtx *mutex, bool value);
+bool		get_bool(t_mtx *mutex, bool *value);
 void		set_long(t_mtx *mutex, long *dest, long value);
-long		get_long(t_mtx *mutex, long value);
+long		get_long(t_mtx *mutex, long *value);
+t_state		get_status(t_philo *philo);
+void		set_status(t_philo *philo, t_state status);
 
 //cleanning
 void		clean(t_table *table);

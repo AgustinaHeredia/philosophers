@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agheredi <agheredi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: agusheredia <agusheredia@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 13:01:28 by agheredi          #+#    #+#             */
-/*   Updated: 2024/04/10 15:15:31 by agheredi         ###   ########.fr       */
+/*   Updated: 2024/04/16 16:59:03 by agusheredia      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	ft_error(char *str)
 	return (1);
 }
 
-int	mtx_error(int status, int mtx_code)
+int	mtx_control(int status, int mtx_code)
 {
 	int	res;
 
@@ -42,7 +42,7 @@ int	mtx_error(int status, int mtx_code)
 	return (res);
 }
 
-int	threads_error(int status, int code)
+int	threads_control(int status, int code)
 {
 	int	res;
 

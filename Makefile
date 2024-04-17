@@ -6,7 +6,7 @@
 #    By: agusheredia <agusheredia@student.42.fr>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/24 20:34:39 by agusheredia       #+#    #+#              #
-#    Updated: 2024/04/14 23:34:57 by agusheredia      ###   ########.fr        #
+#    Updated: 2024/04/16 22:37:20 by agusheredia      ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,6 +23,7 @@ SRC = main.c \
 		syncro_utils.c \
 		actions.c \
 		cleanning.c \
+		getters_setters_status.c \
 
 HEADER = philo.h 
 
