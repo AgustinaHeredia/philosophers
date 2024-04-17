@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   data_init.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agusheredia <agusheredia@student.42.fr>    +#+  +:+       +#+        */
+/*   By: agheredi <agheredi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 12:39:38 by agheredi          #+#    #+#             */
-/*   Updated: 2024/04/16 23:42:56 by agusheredia      ###   ########.fr       */
+/*   Updated: 2024/04/17 10:35:50 by agheredi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,21 +34,12 @@ void	asigne_fork(t_philo *philo, t_fork *fork, int position)
 	int	philo_nrb;
 
 	philo_nrb = philo->table->nbr_of_philos;
-	if ((philo_nrb % 2) == 0)
-	{
-		philo->first_fork = &fork[position];
-		if (philo_nrb > 1)
-			philo->second_fork = &fork[(position + 1) % philo_nrb];
-	}
+	if (philo_nrb == 1)
+		philo->rigth_fork = &fork[position];
 	else
 	{
-		if (philo_nrb == 1)
-			philo->first_fork = &fork[position];
-		else
-		{
-			philo->first_fork = &fork[(position + 1) % philo_nrb];
-			philo->second_fork = &fork[position];
-		}
+		philo->left_fork = &fork[(position + 1) % philo_nrb];
+		philo->rigth_fork = &fork[position];
 	}
 }
 

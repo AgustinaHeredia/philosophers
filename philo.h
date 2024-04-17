@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agusheredia <agusheredia@student.42.fr>    +#+  +:+       +#+        */
+/*   By: agheredi <agheredi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 20:35:59 by agusheredia       #+#    #+#             */
-/*   Updated: 2024/04/17 00:00:43 by agusheredia      ###   ########.fr       */
+/*   Updated: 2024/04/17 10:47:52 by agheredi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,8 +82,8 @@ typedef struct s_philo
 	int			count_meals;
 	long		last_time_meal;
 	t_state		state;
-	t_fork		*second_fork;
-	t_fork		*first_fork;
+	t_fork		*rigth_fork;
+	t_fork		*left_fork;
 	pthread_t	thread_id;
 	t_mtx		philo_mutex;
 	t_table		*table;
@@ -155,8 +155,8 @@ void		set_bool(t_mtx *mutex, bool *dest, bool value);
 bool		get_bool(t_mtx *mutex, bool *value);
 void		set_long(t_mtx *mutex, long *dest, long value);
 long		get_long(t_mtx *mutex, long *value);
-t_state		get_status(t_philo *philo);
-void		set_status(t_philo *philo, t_state status);
+t_state		get_status(t_philo *philo, t_state *value);
+void		set_status(t_philo *philo, t_state *dest, t_state status);
 
 //cleanning
 void		clean(t_table *table);

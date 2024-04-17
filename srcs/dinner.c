@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dinner.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agusheredia <agusheredia@student.42.fr>    +#+  +:+       +#+        */
+/*   By: agheredi <agheredi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 15:21:03 by agheredi          #+#    #+#             */
-/*   Updated: 2024/04/17 00:02:08 by agusheredia      ###   ########.fr       */
+/*   Updated: 2024/04/17 10:53:04 by agheredi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,16 +62,17 @@ void	*dinner_simulation(void *data)
 	wait_all_threads(philo->table);
 	while (!simulation_finish(philo->table))
 	{
-		if (get_status(philo) == FULL || get_status(philo) == DEAD)
+		if (get_status(philo, &philo->state) == FULL
+			|| get_status(philo, &philo->state) == DEAD)
 			break ;
 		eat(philo);
-		if (get_status(philo) == DEAD)
+		if (get_status(philo, &philo->state) == DEAD)
 			break ;
 		ft_sleep(philo);
-		if (get_status(philo) == DEAD)
+		if (get_status(philo, &philo->state) == DEAD)
 			break ;
 		thinking(philo);
-		if (get_status(philo) == DEAD)
+		if (get_status(philo, &philo->state) == DEAD)
 			break ;
 	}
 	return (NULL);
@@ -81,7 +82,7 @@ void	dinner_start(t_table *table)
 {
 	int	i;
 
-	i = 0;
+	i = -1;
 	table->start_simulation = get_time();
 	if (table->nbr_must_eat == 0)
 		return ;
