@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dinner.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agheredi <agheredi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: agusheredia <agusheredia@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 15:21:03 by agheredi          #+#    #+#             */
-/*   Updated: 2024/04/17 10:53:04 by agheredi         ###   ########.fr       */
+/*   Updated: 2024/04/17 11:42:17 by agusheredia      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,19 +35,20 @@ void	*monitor_dinner(void *data)
 	long	time;
 
 	table = data;
-	if (!all_thread_ready(&table->table_mtx, table->nbr_thread,
+	if (all_thread_ready(&table->table_mtx, table->nbr_thread,
 			table->nbr_of_philos))
-		;
-	while (!simulation_finish(table))
 	{
-		i = -1;
-		while (++i < table->nbr_of_philos && (!simulation_finish(table)))
+		while (!simulation_finish(table))
 		{
-			if (philo_died(&table->philo[i]))
+			i = -1;
+			while (++i < table->nbr_of_philos && (!simulation_finish(table)))
 			{
-				set_bool(&table->table_mtx, &table->end_simulation, true);
-				time = time_elapsed(table->philo->table, get_time());
-				print_action(time, table->philo->id_philo, "died", RED);
+				if (philo_died(&table->philo[i]))
+				{
+					set_bool(&table->table_mtx, &table->end_simulation, true);
+					time = time_elapsed(table->philo->table, get_time());
+					print_action(time, table->philo->id_philo, "died", RED);
+				}
 			}
 		}
 	}
@@ -92,10 +93,11 @@ void	dinner_start(t_table *table)
 	else
 	{
 		while (++i < table->nbr_of_philos)
+		{
 			threads_control(pthread_create(&table->philo[i].thread_id, NULL,
 					dinner_simulation, &table->philo[i]), CREATE);
+		}			
 	}
-	table->nbr_thread = i + 1;
 	threads_control(pthread_create(&table->monitor, NULL, monitor_dinner,
 			table), CREATE);
 	i = -1;

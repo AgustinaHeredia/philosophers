@@ -6,7 +6,7 @@
 /*   By: agusheredia <agusheredia@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 11:32:55 by agusheredia       #+#    #+#             */
-/*   Updated: 2024/04/16 23:44:13 by agusheredia      ###   ########.fr       */
+/*   Updated: 2024/04/17 11:49:00 by agusheredia      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,10 @@ bool	all_thread_ready(t_mtx *mutex, int id_thread, int philo_nbr)
 	res = false;
 	mtx_control(pthread_mutex_lock(mutex), LOCK);
 	if (id_thread == philo_nbr)
+	{
 		res = true;
+		printf("All threads are ready\n");
+	}
 	mtx_control(pthread_mutex_unlock(mutex), UNLOCK);
 	return (res);
 }
@@ -53,5 +56,7 @@ bool	philo_died(t_philo *philo)
 	else
 		died = false;
 	mtx_control(pthread_mutex_unlock(&philo->philo_mutex), UNLOCK);
+	if (died == true)
+		set_bool(&philo->table->table_mtx, &philo->table->end_simulation, true);
 	return (died);
 }
