@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syncro_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agusheredia <agusheredia@student.42.fr>    +#+  +:+       +#+        */
+/*   By: agheredi <agheredi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 11:32:55 by agusheredia       #+#    #+#             */
-/*   Updated: 2024/04/17 19:06:52 by agusheredia      ###   ########.fr       */
+/*   Updated: 2024/04/18 14:28:39 by agheredi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,17 +70,21 @@ bool	simulation_finish(t_table *table)
 bool	philo_died(t_philo *philo)
 {
 	bool	died;
+	long	time;
 
 	mtx_control(pthread_mutex_lock(&philo->philo_mutex), LOCK);
 	died = false;
+	time = time_elapsed(philo->table, get_time());
 	if (philo->state == DEAD)
 		died = true;
-	else if (philo->table->time_to_die > philo->last_time_meal)
+	else if (philo->table->time_to_die < philo->last_time_meal)
 		died = true;
-	else if (philo->table->time_to_die > time_elapsed(philo->table, get_time()))
+	else if (philo->table->time_to_die < time)
 		died = true;
 	else
 		died = false;
 	mtx_control(pthread_mutex_unlock(&philo->philo_mutex), UNLOCK);
 	return (died);
 }
+
+	//printf("time died %ld, last %ld, elapse %ld\n", philo->table->time_to_die, philo->last_time_meal, time);

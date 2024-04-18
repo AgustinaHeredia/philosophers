@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   actions.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agusheredia <agusheredia@student.42.fr>    +#+  +:+       +#+        */
+/*   By: agheredi <agheredi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 22:07:23 by agusheredia       #+#    #+#             */
-/*   Updated: 2024/04/18 09:04:30 by agusheredia      ###   ########.fr       */
+/*   Updated: 2024/04/18 15:15:59 by agheredi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ void	take_fork(t_philo *philo)
 	long	time;
 
 	mtx_control(pthread_mutex_lock(&philo->rigth_fork->fork), LOCK);
+	//printf("---el ide del fork es %d\n", philo->rigth_fork->id_fork);
 	time = time_elapsed(philo->table, get_time());
 	print_action(time, philo, "has taken a RIGTH fork", YEL);
 	if (get_status(philo, &philo->state) != DEAD)
@@ -41,17 +42,18 @@ void	eat(t_philo *philo)
 {
 	long	time;
 
-	if (get_status(philo, &philo->state) != DEAD)
-		take_fork(philo);
+	time = time_elapsed(philo->table, get_time());
+	take_fork(philo);
 	if (get_status(philo, &philo->state) != DEAD)
 	{
 		set_status(philo, &philo->state, EATING);
 		time = time_elapsed(philo->table, get_time());
 		print_action(time, philo, "is eating", GRE);
 	}
-	set_long(&philo->philo_mutex, &philo->last_time_meal, get_time());
-	wait_time(philo, EATING);
+	set_long(&philo->philo_mutex, &philo->last_time_meal, time);
+	//wait_time(philo, EATING);
 	mtx_control(pthread_mutex_lock(&philo->philo_mutex), LOCK);
+	wait_time(philo, EATING);
 	philo->count_meals++;
 	if (philo->count_meals == philo->table->nbr_must_eat)
 		set_status(philo, &philo->state, FULL);

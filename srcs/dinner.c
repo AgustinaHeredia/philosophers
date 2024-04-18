@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dinner.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agusheredia <agusheredia@student.42.fr>    +#+  +:+       +#+        */
+/*   By: agheredi <agheredi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 15:21:03 by agheredi          #+#    #+#             */
-/*   Updated: 2024/04/18 09:05:45 by agusheredia      ###   ########.fr       */
+/*   Updated: 2024/04/18 15:59:10 by agheredi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ void	*one_philo(void *data)
 
 	philo = (t_philo *)data;
 	wait_all_threads(philo->table);
-	set_long(&philo->philo_mutex, &philo->last_time_meal, get_time());
+	time = time_elapsed(philo->table, get_time());
+	set_long(&philo->philo_mutex, &philo->last_time_meal, time);
 	time = time_elapsed(philo->table, get_time());
 	print_action(time, philo, "has taken a RIGHT fork", YEL);
 	wait_time(philo, DEAD);
@@ -63,12 +64,10 @@ void	*dinner_simulation(void *data)
 	wait_all_threads(philo->table);
 	while (!simulation_finish(philo->table))
 	{
-		if (get_status(philo, &philo->state) != FULL)
+		if (get_status(philo, &philo->state) != FULL && !philo_died(philo))
 			eat(philo);
 		if (!philo_died(philo))
-		{
 			ft_sleep(philo);
-		}
 		if (!philo_died(philo))
 			thinking(philo);
 		if (philo_died(philo))
@@ -83,7 +82,7 @@ void	dinner_start(t_table *table)
 	int	i;
 
 	i = -1;
-	//table->start_simulation = get_time();
+	table->start_simulation = get_time();
 	if (table->nbr_must_eat == 0)
 		return ;
 	else if (table->nbr_of_philos == 1)
