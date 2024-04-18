@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agusheredia <agusheredia@student.42.fr>    +#+  +:+       +#+        */
+/*   By: agheredi <agheredi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 12:25:55 by agheredi          #+#    #+#             */
-/*   Updated: 2024/04/17 19:04:55 by agusheredia      ###   ########.fr       */
+/*   Updated: 2024/04/18 17:46:20 by agheredi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ void	wait_time(t_philo *philo, t_state state)
 		wait = get_long(&philo->table->table_mtx, &philo->table->time_to_eat);
 	else if (state == DEAD)
 		wait = get_long(&philo->table->table_mtx, &philo->table->time_to_die);
+	wait *= 1000;
 	while ((get_time() - start) < wait)
 		usleep(500);
 }

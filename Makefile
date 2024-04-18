@@ -6,12 +6,12 @@
 #    By: agheredi <agheredi@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/24 20:34:39 by agusheredia       #+#    #+#              #
-#    Updated: 2024/04/18 13:03:25 by agheredi         ###   ########.fr        #
+#    Updated: 2024/04/18 17:35:38 by agheredi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = philo
-FLAGS = -Wall -Werror -Wextra -fsanitize=thread -g
+FLAGS = -Wall -Werror -Wextra #-fsanitize=thread -g
 SRC = main.c \
 		utils.c \
 		parser.c \

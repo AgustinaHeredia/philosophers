@@ -6,7 +6,7 @@
 /*   By: agheredi <agheredi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 20:35:59 by agusheredia       #+#    #+#             */
-/*   Updated: 2024/04/18 15:39:54 by agheredi         ###   ########.fr       */
+/*   Updated: 2024/04/18 17:32:12 by agheredi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,20 +70,14 @@ typedef enum e_philo_state
 	IDLE = 5
 }	t_state;
 
-typedef struct s_fork
-{
-	t_mtx	fork;
-	int		id_fork;
-}	t_fork;
-
 typedef struct s_philo
 {
 	int			id_philo;
 	int			count_meals;
 	long		last_time_meal;
 	t_state		state;
-	t_fork		*rigth_fork;
-	t_fork		*left_fork;
+	t_mtx		*rigth_fork;
+	t_mtx		*left_fork;
 	pthread_t	thread_id;
 	t_mtx		philo_mutex;
 	t_table		*table;
@@ -101,9 +95,9 @@ struct s_table
 	bool		all_philo_ready;
 	bool		end_simulation;
 	t_mtx		table_mtx;
-	t_fork		*fork;
+	t_mtx		*fork;
 	t_philo		*philo;
-	pthread_t	monitor;
+	//pthread_t	monitor;
 };
 
 //FUNCTIONS
@@ -115,7 +109,7 @@ void		parser_input(t_table *table, char **argv);
 int			data_init(t_table *table);
 int			table_init(t_table *table);
 int			philo_init(t_table *table);
-void		asigne_fork(t_philo *philo, t_fork *fork, int position);
+void		asigne_fork(t_philo *philo, t_mtx *fork, int position);
 
 //Functions Dinner
 void		dinner_start(t_table *table);
@@ -128,7 +122,7 @@ void		*one_philo(void *data);
 //actions dinner
 void		eat(t_philo *philo);
 void		take_fork(t_philo *philo);
-void		drop_fork(t_fork *fork_right, t_fork *fork_left);
+void		drop_fork(t_mtx *fork_right, t_mtx *fork_left);
 void		thinking(t_philo *philo);
 void		ft_sleep(t_philo *philo);
 

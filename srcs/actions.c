@@ -6,7 +6,7 @@
 /*   By: agheredi <agheredi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 22:07:23 by agusheredia       #+#    #+#             */
-/*   Updated: 2024/04/18 15:15:59 by agheredi         ###   ########.fr       */
+/*   Updated: 2024/04/18 17:35:29 by agheredi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,26 +16,27 @@ void	take_fork(t_philo *philo)
 {
 	long	time;
 
-	mtx_control(pthread_mutex_lock(&philo->rigth_fork->fork), LOCK);
-	//printf("---el ide del fork es %d\n", philo->rigth_fork->id_fork);
+	mtx_control(pthread_mutex_lock(philo->rigth_fork), LOCK);
+	printf("--- %d del fork es %p\n", philo->id_philo, philo->rigth_fork);
 	time = time_elapsed(philo->table, get_time());
 	print_action(time, philo, "has taken a RIGTH fork", YEL);
 	if (get_status(philo, &philo->state) != DEAD)
 	{
-		mtx_control(pthread_mutex_lock(&philo->left_fork->fork), LOCK);
+		mtx_control(pthread_mutex_lock(philo->left_fork), LOCK);
+		printf("--- %d del fork es %p\n", philo->id_philo, philo->left_fork);
 		time = time_elapsed(philo->table, get_time());
 		print_action(time, philo, "has taken a LEFT fork", YEL);
 	}
 	else
-		mtx_control(pthread_mutex_unlock(&philo->rigth_fork->fork), UNLOCK);
+		mtx_control(pthread_mutex_unlock(philo->rigth_fork), UNLOCK);
 	if (get_status(philo, &philo->state) != DEAD)
 		drop_fork(philo->rigth_fork, philo->left_fork);
 }
 
-void	drop_fork(t_fork *fork_right, t_fork *fork_left)
+void	drop_fork(t_mtx *fork_right, t_mtx *fork_left)
 {
-	mtx_control(pthread_mutex_unlock(&fork_right->fork), UNLOCK);
-	mtx_control(pthread_mutex_unlock(&fork_left->fork), UNLOCK);
+	mtx_control(pthread_mutex_unlock(fork_right), UNLOCK);
+	mtx_control(pthread_mutex_unlock(fork_left), UNLOCK);
 }
 
 void	eat(t_philo *philo)
@@ -51,13 +52,15 @@ void	eat(t_philo *philo)
 		print_action(time, philo, "is eating", GRE);
 	}
 	set_long(&philo->philo_mutex, &philo->last_time_meal, time);
-	//wait_time(philo, EATING);
-	mtx_control(pthread_mutex_lock(&philo->philo_mutex), LOCK);
 	wait_time(philo, EATING);
+	mtx_control(pthread_mutex_lock(&philo->philo_mutex), LOCK);
+	//wait_time(philo, EATING);
 	philo->count_meals++;
+	mtx_control(pthread_mutex_unlock(&philo->philo_mutex), UNLOCK);
+	mtx_control(pthread_mutex_lock(&philo->table->table_mtx), LOCK);
 	if (philo->count_meals == philo->table->nbr_must_eat)
 		set_status(philo, &philo->state, FULL);
-	mtx_control(pthread_mutex_unlock(&philo->philo_mutex), UNLOCK);
+	mtx_control(pthread_mutex_unlock(&philo->table->table_mtx), UNLOCK);
 	drop_fork(philo->rigth_fork, philo->left_fork);
 }
 

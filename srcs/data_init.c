@@ -6,7 +6,7 @@
 /*   By: agheredi <agheredi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 12:39:38 by agheredi          #+#    #+#             */
-/*   Updated: 2024/04/18 15:57:05 by agheredi         ###   ########.fr       */
+/*   Updated: 2024/04/18 17:24:36 by agheredi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	malloc_control(t_table *table)
 	table->philo = (t_philo *)malloc(sizeof(t_philo) * i);
 	if (!table->philo)
 		return (ft_error("Error: malloc failed Philosopher"));
-	table->fork = (t_fork *)malloc(sizeof(t_fork) * i);
+	table->fork = (t_mtx *)malloc(sizeof(t_mtx) * i);
 	if (!table->fork)
 	{
 		free(table->philo);
@@ -29,7 +29,7 @@ int	malloc_control(t_table *table)
 	return (0);
 }
 
-void	asigne_fork(t_philo *philo, t_fork *fork, int position)
+void	asigne_fork(t_philo *philo, t_mtx *fork, int position)
 {
 	int	philo_nrb;
 
@@ -38,8 +38,11 @@ void	asigne_fork(t_philo *philo, t_fork *fork, int position)
 		philo->rigth_fork = &fork[position];
 	else
 	{
-		philo->left_fork = &fork[(position + 1) % philo_nrb];
 		philo->rigth_fork = &fork[position];
+		if (position == (philo_nrb - 1))
+			philo->left_fork = &fork[0];
+		else
+			philo->left_fork = &fork[(position + 1)];
 	}
 }
 
@@ -98,10 +101,9 @@ int	data_init(t_table *table)
 	i = -1;
 	while (++i < table->nbr_of_philos)
 	{
-		res = mtx_control(pthread_mutex_init(&table->fork[i].fork, NULL), INIT);
+		res = mtx_control(pthread_mutex_init(&table->fork[i], NULL), INIT);
 		if (res != 0)
 			return (1);
-		table->fork[i].id_fork = i + 1;
 	}
 	if (philo_init(table) != 0)
 		return (1);
