@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   actions.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agheredi <agheredi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: agusheredia <agusheredia@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 22:07:23 by agusheredia       #+#    #+#             */
-/*   Updated: 2024/04/17 16:13:08 by agheredi         ###   ########.fr       */
+/*   Updated: 2024/04/18 09:04:30 by agusheredia      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,12 @@ void	take_fork(t_philo *philo)
 
 	mtx_control(pthread_mutex_lock(&philo->rigth_fork->fork), LOCK);
 	time = time_elapsed(philo->table, get_time());
-	print_action(time, philo, "has taken a FIRST fork", YEL);
+	print_action(time, philo, "has taken a RIGTH fork", YEL);
 	if (get_status(philo, &philo->state) != DEAD)
 	{
 		mtx_control(pthread_mutex_lock(&philo->left_fork->fork), LOCK);
 		time = time_elapsed(philo->table, get_time());
-		print_action(time, philo, "has taken a SECOND fork", YEL);
+		print_action(time, philo, "has taken a LEFT fork", YEL);
 	}
 	else
 		mtx_control(pthread_mutex_unlock(&philo->rigth_fork->fork), UNLOCK);
@@ -63,9 +63,9 @@ void	thinking(t_philo *philo)
 {
 	long	time;
 
-	set_status(philo, &philo->state, THINKING);
 	if (get_status(philo, &philo->state) != DEAD)
 	{
+		set_status(philo, &philo->state, THINKING);
 		time = time_elapsed(philo->table, get_time());
 		print_action(time, philo, "is thinking", LIL);
 	}
@@ -75,9 +75,9 @@ void	ft_sleep(t_philo *philo)
 {
 	long	time;
 
-	set_status(philo, &philo->state, SLEEPING);
 	if (get_status(philo, &philo->state) != DEAD)
 	{
+		set_status(philo, &philo->state, SLEEPING);
 		time = time_elapsed(philo->table, get_time());
 		print_action(time, philo, "is sleeping", BLU);
 	}

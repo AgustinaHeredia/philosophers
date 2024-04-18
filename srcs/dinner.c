@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dinner.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agheredi <agheredi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: agusheredia <agusheredia@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 15:21:03 by agheredi          #+#    #+#             */
-/*   Updated: 2024/04/17 16:56:25 by agheredi         ###   ########.fr       */
+/*   Updated: 2024/04/18 09:05:45 by agusheredia      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ void	*monitor_dinner(void *data)
 			{
 				if (philo_died(&table->philo[i]))
 				{
+					set_status(&table->philo[i], &table->philo[i].state, DEAD);
 					time = time_elapsed(table, get_time());
 					print_action(time, table->philo, "died", RED);
 					set_bool(&table->table_mtx, &table->end_simulation, true);
@@ -64,10 +65,8 @@ void	*dinner_simulation(void *data)
 	{
 		if (get_status(philo, &philo->state) != FULL)
 			eat(philo);
-		printf("no esta muerto puede dormir\n");
 		if (!philo_died(philo))
 		{
-			printf("no esta muerto puede dormir\n");
 			ft_sleep(philo);
 		}
 		if (!philo_died(philo))
@@ -84,7 +83,7 @@ void	dinner_start(t_table *table)
 	int	i;
 
 	i = -1;
-	table->start_simulation = get_time();
+	//table->start_simulation = get_time();
 	if (table->nbr_must_eat == 0)
 		return ;
 	else if (table->nbr_of_philos == 1)

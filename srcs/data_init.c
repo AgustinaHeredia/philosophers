@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   data_init.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agheredi <agheredi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: agusheredia <agusheredia@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 12:39:38 by agheredi          #+#    #+#             */
-/*   Updated: 2024/04/17 10:35:50 by agheredi         ###   ########.fr       */
+/*   Updated: 2024/04/18 09:05:43 by agusheredia      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ int	table_init(t_table *table)
 	table->end_simulation = false;
 	table->all_philo_ready = false;
 	table->nbr_thread = 0;
+	table->start_simulation = get_time();
 	if (malloc_control(table) != 0)
 		return (1);
 	res = mtx_control(pthread_mutex_init(&table->table_mtx, NULL), INIT);
@@ -89,6 +90,8 @@ int	data_init(t_table *table)
 	int	i;
 	int	res;
 
+	if (table->nbr_of_philos == 0)
+		return (1);
 	res = table_init(table);
 	if (res != 0)
 		return (1);
