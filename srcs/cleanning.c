@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cleanning.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agusheredia <agusheredia@student.42.fr>    +#+  +:+       +#+        */
+/*   By: agheredi <agheredi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 23:34:33 by agusheredia       #+#    #+#             */
-/*   Updated: 2024/04/17 00:04:35 by agusheredia      ###   ########.fr       */
+/*   Updated: 2024/04/19 15:12:13 by agheredi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,21 @@ void	clean(t_table *table)
 	int		i;
 	t_philo	*philo;
 
-	i = -1;
-	while (++i < table->nbr_of_philos)
+	i = 0;
+	while (i < table->nbr_of_philos)
 	{
-		philo = table->philo + i;
+		philo = &table->philo[i];
 		mtx_control(pthread_mutex_destroy(&philo->philo_mutex), DESTROY);
+		i++;
+	}
+	i = 0;
+	while (i < table->nbr_of_philos)
+	{
+		mtx_control(pthread_mutex_destroy(&table->fork[i]), DESTROY);
+		i++;
 	}
 	mtx_control(pthread_mutex_destroy(&table->table_mtx), DESTROY);
+	mtx_control(pthread_mutex_destroy(&table->time_mtx), DESTROY);
 	free(table->fork);
 	free(table->philo);
 }

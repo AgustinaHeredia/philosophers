@@ -6,7 +6,7 @@
 /*   By: agheredi <agheredi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 20:35:59 by agusheredia       #+#    #+#             */
-/*   Updated: 2024/04/18 17:32:12 by agheredi         ###   ########.fr       */
+/*   Updated: 2024/04/19 14:25:01 by agheredi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,20 +41,20 @@
 # define JOIN 7
 
 # define MSN_ENOMEM "The process cannot allocate enough \
-	memory to create another mutex."
+memory to create another mutex."
 # define MSN_EDEADLK "A deadlock would occur if \
-	the thread blocked waiting for mutex."
+the thread blocked waiting for mutex."
 # define MSN_EINVAL "The implementation has detected that the value specified by thread \
-    does not refer to a joinable thread."
+does not refer to a joinable thread."
 # define MSN_EPERM "The caller does not have appropriate permission to set \
-    the required scheduling parameters or scheduling policy."
+the required scheduling parameters or scheduling policy."
 # define MSN_EAGAIN "The system lacked the necessary resources to create another thread, \
-	or the system-imposed limit on the total number of threads in a process \
-	[PTHREAD_THREADS_MAX] would be exceeded."
+or the system-imposed limit on the total number of threads in a process \
+[PTHREAD_THREADS_MAX] would be exceeded."
 # define MSN_ESRCH " No thread could be found corresponding to that specified \
-	by the given thread ID, thread."
+by the given thread ID, thread."
 # define MSN_EDEADLK_T "A deadlock was detected or the value of thread \
-	specifies the calling thread."
+specifies the calling thread."
 
 //Structs
 typedef struct s_table		t_table;
@@ -94,10 +94,10 @@ struct s_table
 	long		start_simulation;
 	bool		all_philo_ready;
 	bool		end_simulation;
+	t_mtx		time_mtx;
 	t_mtx		table_mtx;
 	t_mtx		*fork;
 	t_philo		*philo;
-	//pthread_t	monitor;
 };
 
 //FUNCTIONS
@@ -115,8 +115,6 @@ void		asigne_fork(t_philo *philo, t_mtx *fork, int position);
 void		dinner_start(t_table *table);
 void		*dinner_simulation(void *data);
 void		*monitor_dinner(void *data);
-void		wait_all_threads(t_table *table);
-bool		all_thread_ready(t_mtx *mutex, int id_thread, int philo_nbr);
 void		*one_philo(void *data);
 
 //actions dinner
@@ -134,7 +132,7 @@ int			check_char(char *argv);
 size_t		ft_strlen(const char *s);
 long		get_time(void);
 long		time_elapsed(t_table *table, long actual_time);
-void		wait_time(t_philo *philo, t_state state);
+void		wait_time(long wait_time);
 void		print_action(long time, t_philo *philo, char *str, char *color);
 bool		simulation_finish(t_table *table);
 bool		philo_died(t_philo *philo);

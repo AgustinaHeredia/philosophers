@@ -6,32 +6,13 @@
 /*   By: agheredi <agheredi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 11:32:55 by agusheredia       #+#    #+#             */
-/*   Updated: 2024/04/18 14:28:39 by agheredi         ###   ########.fr       */
+/*   Updated: 2024/04/19 15:38:05 by agheredi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philo.h"
 
-void	wait_all_threads(t_table *table)
-{
-	while (!get_bool(&table->table_mtx, &table->all_philo_ready))
-		break ;
-}
-
-bool	all_thread_ready(t_mtx *mutex, int id_thread, int philo_nbr)
-{
-	bool	res;
-
-	res = false;
-	mtx_control(pthread_mutex_lock(mutex), LOCK);
-	if (id_thread == philo_nbr || id_thread == -1)
-	{
-		res = true;
-	}
-	mtx_control(pthread_mutex_unlock(mutex), UNLOCK);
-	return (res);
-}
-
+//no lo est'a haciendo
 void	all_philo_full(t_table *table)
 {
 	int	i;
@@ -46,7 +27,7 @@ void	all_philo_full(t_table *table)
 			count_full++;
 	}
 	if (count_full == table->nbr_of_philos)
-		set_bool(&table->table_mtx, &table->end_simulation, true);
+		table->end_simulation = true;
 	mtx_control(pthread_mutex_unlock(&table->table_mtx), UNLOCK);
 }
 
@@ -66,7 +47,7 @@ bool	simulation_finish(t_table *table)
 	finish = get_bool(&table->table_mtx, &table->end_simulation);
 	return (finish);
 }
-
+//cheachear condicion de muerte
 bool	philo_died(t_philo *philo)
 {
 	bool	died;
@@ -74,10 +55,8 @@ bool	philo_died(t_philo *philo)
 
 	mtx_control(pthread_mutex_lock(&philo->philo_mutex), LOCK);
 	died = false;
-	time = time_elapsed(philo->table, get_time());
+	time = time_elapsed(philo->table, get_time()) - philo->last_time_meal;
 	if (philo->state == DEAD)
-		died = true;
-	else if (philo->table->time_to_die < philo->last_time_meal)
 		died = true;
 	else if (philo->table->time_to_die < time)
 		died = true;
@@ -86,5 +65,3 @@ bool	philo_died(t_philo *philo)
 	mtx_control(pthread_mutex_unlock(&philo->philo_mutex), UNLOCK);
 	return (died);
 }
-
-	//printf("time died %ld, last %ld, elapse %ld\n", philo->table->time_to_die, philo->last_time_meal, time);

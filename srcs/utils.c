@@ -6,7 +6,7 @@
 /*   By: agheredi <agheredi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 12:25:55 by agheredi          #+#    #+#             */
-/*   Updated: 2024/04/18 17:46:20 by agheredi         ###   ########.fr       */
+/*   Updated: 2024/04/19 14:37:45 by agheredi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,27 +39,20 @@ long	time_elapsed(t_table *table, long actual_time)
 	long	elapsed;
 	long	start;
 
-	start = table->start_simulation;
+	start = get_long(&table->time_mtx, &table->start_simulation);
 	elapsed = actual_time - start;
 	return (elapsed);
 }
 
-void	wait_time(t_philo *philo, t_state state)
+void	wait_time(long wait_t)
 {
 	long	start;
 	long	wait;
 
 	start = get_time();
-	wait = 0;
-	if (state == SLEEPING)
-		wait = get_long(&philo->table->table_mtx, &philo->table->time_to_sleep);
-	else if (state == EATING)
-		wait = get_long(&philo->table->table_mtx, &philo->table->time_to_eat);
-	else if (state == DEAD)
-		wait = get_long(&philo->table->table_mtx, &philo->table->time_to_die);
-	wait *= 1000;
+	wait = wait_t;
 	while ((get_time() - start) < wait)
-		usleep(500);
+		usleep(50);
 }
 
 void	print_action(long time, t_philo *philo, char *str, char *color)

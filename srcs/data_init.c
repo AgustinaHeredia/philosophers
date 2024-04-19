@@ -6,7 +6,7 @@
 /*   By: agheredi <agheredi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 12:39:38 by agheredi          #+#    #+#             */
-/*   Updated: 2024/04/18 17:24:36 by agheredi         ###   ########.fr       */
+/*   Updated: 2024/04/19 10:31:58 by agheredi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,9 @@ int	table_init(t_table *table)
 	if (malloc_control(table) != 0)
 		return (1);
 	res = mtx_control(pthread_mutex_init(&table->table_mtx, NULL), INIT);
+	if (res != 0)
+		return (1);
+	res = mtx_control(pthread_mutex_init(&table->time_mtx, NULL), INIT);
 	if (res != 0)
 		return (1);
 	return (res);

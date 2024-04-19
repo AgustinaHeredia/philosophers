@@ -6,7 +6,7 @@
 /*   By: agheredi <agheredi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 15:21:03 by agheredi          #+#    #+#             */
-/*   Updated: 2024/04/18 17:40:16 by agheredi         ###   ########.fr       */
+/*   Updated: 2024/04/19 15:07:07 by agheredi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,11 @@ void	*one_philo(void *data)
 	long	time;
 
 	philo = (t_philo *)data;
-	wait_all_threads(philo->table);
 	time = time_elapsed(philo->table, get_time());
 	set_long(&philo->philo_mutex, &philo->last_time_meal, time);
 	time = time_elapsed(philo->table, get_time());
 	print_action(time, philo, "has taken a RIGHT fork", YEL);
-	wait_time(philo, DEAD);
-	set_status(philo, &philo->state, DEAD);
+	wait_time(get_long(&philo->table->table_mtx, &philo->table->time_to_die));
 	return (NULL);
 }
 
@@ -58,7 +56,6 @@ void	*dinner_simulation(void *data)
 	t_philo	*philo;
 
 	philo = (t_philo *)data;
-	//wait_all_threads(philo->table);
 	while (!get_bool(&philo->table->table_mtx, &philo->table->end_simulation))
 	{
 		if (!get_bool(&philo->table->table_mtx, &philo->table->end_simulation))
@@ -94,10 +91,7 @@ void	dinner_start(t_table *table)
 	}
 	table->nbr_thread = i;
 	monitor_dinner(table);
-	//threads_control(pthread_create(&table->monitor, NULL, monitor_dinner,
-	//		table), CREATE);
 	i = -1;
 	while (++i < table->nbr_of_philos)
 		threads_control(pthread_join(table->philo[i].thread_id, NULL), JOIN);
-	// threads_control(pthread_join(table->monitor, NULL), JOIN);
 }
