@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dinner.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agheredi <agheredi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: agusheredia <agusheredia@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 15:21:03 by agheredi          #+#    #+#             */
-/*   Updated: 2024/04/19 15:07:07 by agheredi         ###   ########.fr       */
+/*   Updated: 2024/04/21 18:02:32 by agusheredia      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,8 @@ void	*dinner_simulation(void *data)
 	philo = (t_philo *)data;
 	while (!get_bool(&philo->table->table_mtx, &philo->table->end_simulation))
 	{
-		if (!get_bool(&philo->table->table_mtx, &philo->table->end_simulation))
+		if (!get_bool(&philo->table->table_mtx, &philo->table->end_simulation)
+			&& (get_status(philo, &philo->state) != FULL))
 			eat(philo);
 		if (!get_bool(&philo->table->table_mtx, &philo->table->end_simulation))
 			ft_sleep(philo);

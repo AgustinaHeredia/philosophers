@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   data_init.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agheredi <agheredi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: agusheredia <agusheredia@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 12:39:38 by agheredi          #+#    #+#             */
-/*   Updated: 2024/04/19 10:31:58 by agheredi         ###   ########.fr       */
+/*   Updated: 2024/04/21 18:33:11 by agusheredia      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ int	philo_init(t_table *table)
 		philo->count_meals = 0;
 		philo->state = IDLE;
 		philo->last_time_meal = 0;
+		philo->philo_full = false;
 		asigne_fork(philo, table->fork, i);
 		res = mtx_control(pthread_mutex_init(&philo->philo_mutex, NULL), INIT);
 		if (res != 0)

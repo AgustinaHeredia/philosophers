@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agheredi <agheredi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: agusheredia <agusheredia@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 20:35:59 by agusheredia       #+#    #+#             */
-/*   Updated: 2024/04/19 14:25:01 by agheredi         ###   ########.fr       */
+/*   Updated: 2024/04/21 18:32:43 by agusheredia      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ typedef struct s_philo
 	int			id_philo;
 	int			count_meals;
 	long		last_time_meal;
+	bool		philo_full;
 	t_state		state;
 	t_mtx		*rigth_fork;
 	t_mtx		*left_fork;

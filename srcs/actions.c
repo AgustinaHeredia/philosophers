@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   actions.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agheredi <agheredi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: agusheredia <agusheredia@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 22:07:23 by agusheredia       #+#    #+#             */
-/*   Updated: 2024/04/19 15:32:13 by agheredi         ###   ########.fr       */
+/*   Updated: 2024/04/21 18:47:31 by agusheredia      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,12 @@ void	take_fork(t_philo *philo)
 
 	mtx_control(pthread_mutex_lock(philo->rigth_fork), LOCK);
 	time = time_elapsed(philo->table, get_time());
-	print_action(time, philo, "has taken a RIGTH fork", YEL);
+	//print_action(time, philo, "has taken a RIGTH fork", YEL);
 	if (get_status(philo, &philo->state) != DEAD)
 	{
 		mtx_control(pthread_mutex_lock(philo->left_fork), LOCK);
 		time = time_elapsed(philo->table, get_time());
-		print_action(time, philo, "has taken a LEFT fork", YEL);
+		print_action(time, philo, "has taken a fork", YEL);
 	}
 	else
 		mtx_control(pthread_mutex_unlock(philo->rigth_fork), UNLOCK);
@@ -54,9 +54,7 @@ void	eat(t_philo *philo)
 	mtx_control(pthread_mutex_lock(&philo->philo_mutex), LOCK);
 	philo->count_meals++;
 	if (philo->count_meals == philo->table->nbr_must_eat)
-		philo->state = FULL;
-	printf("Nro comida %d\n", philo->count_meals);
-	printf("Nro comida %d\n", philo->table->nbr_must_eat);
+		philo->philo_full = true;
 	mtx_control(pthread_mutex_unlock(&philo->philo_mutex), UNLOCK);
 	mtx_control(pthread_mutex_lock(&philo->table->table_mtx), LOCK);
 	if (philo->count_meals == philo->table->nbr_must_eat)
