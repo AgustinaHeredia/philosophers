@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dinner.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agusheredia <agusheredia@student.42.fr>    +#+  +:+       +#+        */
+/*   By: agheredi <agheredi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 15:21:03 by agheredi          #+#    #+#             */
-/*   Updated: 2024/04/21 18:02:32 by agusheredia      ###   ########.fr       */
+/*   Updated: 2024/04/22 16:39:19 by agheredi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,11 @@ void	*monitor_dinner(void *data)
 			if (philo_died(&table->philo[i]))
 			{
 				set_status(&table->philo[i], &table->philo[i].state, DEAD);
+				mtx_control(pthread_mutex_lock(&table->table_mtx), LOCK);
 				time = time_elapsed(table, get_time());
-				print_action(time, table->philo, "died", RED);
-				set_bool(&table->table_mtx, &table->end_simulation, true);
+				printf("%s%ld %d %s%s\n", RED, time, (i + 1), "died", NC);
+				table->end_simulation = true;
+				mtx_control(pthread_mutex_unlock(&table->table_mtx), UNLOCK);
 			}
 			i++;
 		}
@@ -56,6 +58,8 @@ void	*dinner_simulation(void *data)
 	t_philo	*philo;
 
 	philo = (t_philo *)data;
+	if (philo->id_philo % 2 == 0)
+		wait_time(philo->table->time_to_eat * 0.5);
 	while (!get_bool(&philo->table->table_mtx, &philo->table->end_simulation))
 	{
 		if (!get_bool(&philo->table->table_mtx, &philo->table->end_simulation)
@@ -86,8 +90,6 @@ void	dinner_start(t_table *table)
 		{
 			threads_control(pthread_create(&table->philo[i].thread_id, NULL,
 					dinner_simulation, &table->philo[i]), CREATE);
-			if (i % 2 == 0)
-				usleep(100);
 		}
 	}
 	table->nbr_thread = i;

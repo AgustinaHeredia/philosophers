@@ -6,7 +6,7 @@
 /*   By: agheredi <agheredi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 12:25:55 by agheredi          #+#    #+#             */
-/*   Updated: 2024/04/19 14:37:45 by agheredi         ###   ########.fr       */
+/*   Updated: 2024/04/22 12:41:07 by agheredi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,13 +52,13 @@ void	wait_time(long wait_t)
 	start = get_time();
 	wait = wait_t;
 	while ((get_time() - start) < wait)
-		usleep(50);
+		usleep(100);
 }
 
 void	print_action(long time, t_philo *philo, char *str, char *color)
 {
 	mtx_control(pthread_mutex_lock(&philo->table->table_mtx), LOCK);
-	if (philo->table->end_simulation == false)
+	if (philo->table->end_simulation == false && philo->state != DEAD)
 		printf("%s%ld %d %s%s\n", color, time, philo->id_philo, str, NC);
 	mtx_control(pthread_mutex_unlock(&philo->table->table_mtx), UNLOCK);
 }

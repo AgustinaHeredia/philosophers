@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syncro_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agusheredia <agusheredia@student.42.fr>    +#+  +:+       +#+        */
+/*   By: agheredi <agheredi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 11:32:55 by agusheredia       #+#    #+#             */
-/*   Updated: 2024/04/21 18:46:02 by agusheredia      ###   ########.fr       */
+/*   Updated: 2024/04/22 12:10:58 by agheredi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   actions.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agusheredia <agusheredia@student.42.fr>    +#+  +:+       +#+        */
+/*   By: agheredi <agheredi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 22:07:23 by agusheredia       #+#    #+#             */
-/*   Updated: 2024/04/21 18:47:31 by agusheredia      ###   ########.fr       */
+/*   Updated: 2024/04/22 16:38:56 by agheredi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	take_fork(t_philo *philo)
 
 	mtx_control(pthread_mutex_lock(philo->rigth_fork), LOCK);
 	time = time_elapsed(philo->table, get_time());
-	//print_action(time, philo, "has taken a RIGTH fork", YEL);
+	// print_action(time, philo, "has taken a RIGTH fork", YEL);
 	if (get_status(philo, &philo->state) != DEAD)
 	{
 		mtx_control(pthread_mutex_lock(philo->left_fork), LOCK);
@@ -43,7 +43,8 @@ void	eat(t_philo *philo)
 
 	time = time_elapsed(philo->table, get_time());
 	take_fork(philo);
-	if (get_status(philo, &philo->state) != DEAD)
+	if (get_status(philo, &philo->state) != DEAD
+		&& (get_status(philo, &philo->state) != FULL))
 	{
 		set_status(philo, &philo->state, EATING);
 		time = time_elapsed(philo->table, get_time());
@@ -61,6 +62,7 @@ void	eat(t_philo *philo)
 		set_status(philo, &philo->state, FULL);
 	mtx_control(pthread_mutex_unlock(&philo->table->table_mtx), UNLOCK);
 	drop_fork(philo->rigth_fork, philo->left_fork);
+	// ft_sleep(philo);
 }
 
 void	thinking(t_philo *philo)
@@ -69,9 +71,9 @@ void	thinking(t_philo *philo)
 
 	if (get_status(philo, &philo->state) != DEAD)
 	{
-		set_status(philo, &philo->state, THINKING);
 		time = time_elapsed(philo->table, get_time());
 		print_action(time, philo, "is thinking", LIL);
+		set_status(philo, &philo->state, THINKING);
 	}
 }
 
@@ -81,9 +83,12 @@ void	ft_sleep(t_philo *philo)
 
 	if (get_status(philo, &philo->state) != DEAD)
 	{
-		set_status(philo, &philo->state, SLEEPING);
 		time = time_elapsed(philo->table, get_time());
 		print_action(time, philo, "is sleeping", BLU);
+		set_status(philo, &philo->state, SLEEPING);
 	}
+	else if (get_status(philo, &philo->state) == DEAD
+		|| get_bool(&philo->table->table_mtx, &philo->table->end_simulation))
+		mtx_control(pthread_mutex_unlock(philo->rigth_fork), UNLOCK);
 	wait_time(get_long(&philo->table->table_mtx, &philo->table->time_to_sleep));
 }
