@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   actions.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agheredi <agheredi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: agusheredia <agusheredia@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 22:07:23 by agusheredia       #+#    #+#             */
-/*   Updated: 2024/04/22 16:38:56 by agheredi         ###   ########.fr       */
+/*   Updated: 2024/04/22 18:29:20 by agusheredia      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void	eat(t_philo *philo)
 		set_status(philo, &philo->state, FULL);
 	mtx_control(pthread_mutex_unlock(&philo->table->table_mtx), UNLOCK);
 	drop_fork(philo->rigth_fork, philo->left_fork);
-	// ft_sleep(philo);
+	ft_sleep(philo);
 }
 
 void	thinking(t_philo *philo)
