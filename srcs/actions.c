@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   actions.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agusheredia <agusheredia@student.42.fr>    +#+  +:+       +#+        */
+/*   By: agheredi <agheredi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 22:07:23 by agusheredia       #+#    #+#             */
-/*   Updated: 2024/04/22 18:29:20 by agusheredia      ###   ########.fr       */
+/*   Updated: 2024/04/23 15:07:24 by agheredi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,12 @@ void	take_fork(t_philo *philo)
 
 	mtx_control(pthread_mutex_lock(philo->rigth_fork), LOCK);
 	time = time_elapsed(philo->table, get_time());
-	// print_action(time, philo, "has taken a RIGTH fork", YEL);
 	if (get_status(philo, &philo->state) != DEAD)
 	{
 		mtx_control(pthread_mutex_lock(philo->left_fork), LOCK);
 		time = time_elapsed(philo->table, get_time());
 		print_action(time, philo, "has taken a fork", YEL);
+		set_status(philo, &philo->state, FORK);
 	}
 	else
 		mtx_control(pthread_mutex_unlock(philo->rigth_fork), UNLOCK);
@@ -44,7 +44,8 @@ void	eat(t_philo *philo)
 	time = time_elapsed(philo->table, get_time());
 	take_fork(philo);
 	if (get_status(philo, &philo->state) != DEAD
-		&& (get_status(philo, &philo->state) != FULL))
+		&& !(get_bool(&philo->philo_mutex, &philo->philo_full))
+		&& get_status(philo, &philo->state) == FORK)
 	{
 		set_status(philo, &philo->state, EATING);
 		time = time_elapsed(philo->table, get_time());
@@ -57,12 +58,7 @@ void	eat(t_philo *philo)
 	if (philo->count_meals == philo->table->nbr_must_eat)
 		philo->philo_full = true;
 	mtx_control(pthread_mutex_unlock(&philo->philo_mutex), UNLOCK);
-	mtx_control(pthread_mutex_lock(&philo->table->table_mtx), LOCK);
-	if (philo->count_meals == philo->table->nbr_must_eat)
-		set_status(philo, &philo->state, FULL);
-	mtx_control(pthread_mutex_unlock(&philo->table->table_mtx), UNLOCK);
 	drop_fork(philo->rigth_fork, philo->left_fork);
-	ft_sleep(philo);
 }
 
 void	thinking(t_philo *philo)

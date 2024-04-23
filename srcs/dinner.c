@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dinner.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agusheredia <agusheredia@student.42.fr>    +#+  +:+       +#+        */
+/*   By: agheredi <agheredi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 15:21:03 by agheredi          #+#    #+#             */
-/*   Updated: 2024/04/22 18:26:54 by agusheredia      ###   ########.fr       */
+/*   Updated: 2024/04/23 15:43:07 by agheredi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,18 +58,19 @@ void	*dinner_simulation(void *data)
 	t_philo	*philo;
 
 	philo = (t_philo *)data;
+	wait_all_philo(philo->table);
 	if (philo->id_philo % 2 == 0)
 		wait_time(philo->table->time_to_eat * 0.5);
 	while (!get_bool(&philo->table->table_mtx, &philo->table->end_simulation))
 	{
 		if (!get_bool(&philo->table->table_mtx, &philo->table->end_simulation)
-			&& (get_status(philo, &philo->state) != FULL))
+			&& !(get_bool(&philo->philo_mutex, &philo->philo_full)))
 			eat(philo);
-		// if (!get_bool(&philo->table->table_mtx, &philo->table->end_simulation)
-		// 	&& (get_status(philo, &philo->state) != FULL))
-		// 	ft_sleep(philo);
 		if (!get_bool(&philo->table->table_mtx, &philo->table->end_simulation)
-			&& (get_status(philo, &philo->state) != FULL))
+			&& (get_status(philo, &philo->state) == EATING))
+			ft_sleep(philo);
+		if (!get_bool(&philo->table->table_mtx, &philo->table->end_simulation)
+			&& (get_status(philo, &philo->state) == SLEEPING))
 			thinking(philo);
 	}
 	return (NULL);
@@ -80,7 +81,7 @@ void	dinner_start(t_table *table)
 	int	i;
 
 	i = -1;
-	table->start_simulation = get_time();
+	// table->start_simulation = get_time();
 	if (table->nbr_must_eat == 0)
 		return ;
 	else if (table->nbr_of_philos == 1)
@@ -94,8 +95,10 @@ void	dinner_start(t_table *table)
 					dinner_simulation, &table->philo[i]), CREATE);
 		}
 	}
-	table->nbr_thread = i;
 	monitor_dinner(table);
+	table->start_simulation = get_time();
+	set_bool(&table->table_mtx, &table->all_philo_ready, true);
+	table->nbr_thread = i;
 	i = -1;
 	while (++i < table->nbr_of_philos)
 		threads_control(pthread_join(table->philo[i].thread_id, NULL), JOIN);

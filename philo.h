@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agusheredia <agusheredia@student.42.fr>    +#+  +:+       +#+        */
+/*   By: agheredi <agheredi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 20:35:59 by agusheredia       #+#    #+#             */
-/*   Updated: 2024/04/21 18:32:43 by agusheredia      ###   ########.fr       */
+/*   Updated: 2024/04/23 15:37:35 by agheredi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ typedef enum e_philo_state
 	SLEEPING = 1,
 	THINKING = 2,
 	DEAD = 3,
-	FULL = 4,
+	FORK = 4,
 	IDLE = 5
 }	t_state;
 
@@ -138,6 +138,7 @@ void		print_action(long time, t_philo *philo, char *str, char *color);
 bool		simulation_finish(t_table *table);
 bool		philo_died(t_philo *philo);
 void		all_philo_full(t_table *table);
+void		wait_all_philo(t_table *table);
 
 //Error function
 int			ft_error(char *str);
