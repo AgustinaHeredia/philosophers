@@ -6,7 +6,7 @@
 /*   By: agheredi <agheredi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 15:21:03 by agheredi          #+#    #+#             */
-/*   Updated: 2024/04/23 15:43:07 by agheredi         ###   ########.fr       */
+/*   Updated: 2024/04/23 15:58:03 by agheredi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,9 +95,9 @@ void	dinner_start(t_table *table)
 					dinner_simulation, &table->philo[i]), CREATE);
 		}
 	}
-	monitor_dinner(table);
 	table->start_simulation = get_time();
 	set_bool(&table->table_mtx, &table->all_philo_ready, true);
+	monitor_dinner(table);
 	table->nbr_thread = i;
 	i = -1;
 	while (++i < table->nbr_of_philos)
