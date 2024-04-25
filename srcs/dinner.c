@@ -6,7 +6,7 @@
 /*   By: agheredi <agheredi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 15:21:03 by agheredi          #+#    #+#             */
-/*   Updated: 2024/04/23 15:58:03 by agheredi         ###   ########.fr       */
+/*   Updated: 2024/04/24 10:21:47 by agheredi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,6 @@ void	dinner_start(t_table *table)
 	int	i;
 
 	i = -1;
-	// table->start_simulation = get_time();
 	if (table->nbr_must_eat == 0)
 		return ;
 	else if (table->nbr_of_philos == 1)
